@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lmz.mapper.GoodsMapper">
+
+    <select id="goodsSearch" resultType="com.lmz.domain.Goods">
+        select * from goods
+    </select>
+    <select id="goodsQuery" resultType="com.lmz.domain.Goods" parameterType="string">
+        select * from goods
+        <where>
+            <if test="value!=null">
+                g_id like "%"#{g_id,jdbcType=VARCHAR}"%" or g_name like "%"#{g_name,jdbcType=VARCHAR}"%" or g_firm like
+                "%"#{g_firm,jdbcType=VARCHAR}"%"
+            </if>
+        </where>
+    </select>
+    <delete id="goodsDelete" parameterType="com.lmz.domain.Goods">
+        delete from goods where g_id=#{g_id}
+    </delete>
+    <update id="goodsEdit" parameterType="com.lmz.domain.Goods">
+        update goods
+        <set>
+            <if test="g_img!=null">g_name=#{g_name},g_price=#{g_price},g_firm=#{g_firm},g_num=#{g_num},g_img=#{g_img}
+            </if>
+            <if test="g_img==null">g_name=#{g_name},g_price=#{g_price},g_firm=#{g_firm},g_num=#{g_num}
+            </if>
+        </set>
+        where
+        g_id=#{g_id}
+    </update>
+    <insert id="goodsAdd" parameterType="com.lmz.domain.Goods">
+        insert into goods (g_name,g_price,g_firm,g_num,g_img) values (#{g_name},#{g_price},#{g_firm},#{g_num},#{g_img})
+    </insert>
+</mapper>

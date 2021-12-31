@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <context:component-scan base-package="com.lmz.controller"/>
+
+    <mvc:default-servlet-handler/>
+    <mvc:resources mapping="/assets/**" location="/WEB-INF/assets/"/>
+    <!--mvc注解驱动-->
+    <!--    <mvc:annotation-driven conversion-service="conversionService"/>-->
+    <mvc:annotation-driven />
+
+    <!--内部资源视图解析器-->
+    <bean id="resourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/page/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="5232300"/>
+        <property name="maxUploadSizePerFile" value="5232300"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/loginPage"/>
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/assets/**"/>
+            <bean class="com.lmz.interceptor.Interceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <bean class="com.lmz.resolver.Resolver"/>
+</beans>
